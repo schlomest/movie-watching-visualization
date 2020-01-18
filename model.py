@@ -3,10 +3,10 @@ class Movie():
         self.name = name
         self.date_watched = date_watched
 
-        if rating == 'n/a':
+        if rating == 'n/a' or rating == None:
             self.rating = None
         else:
-            self.rating = rating
+            self.rating = int(rating)
 
     def __repr__(self):
         return 'Movie(name={0}, date_watched={1}, rating={2})'.format(self.name, self.date_watched, self.rating)
