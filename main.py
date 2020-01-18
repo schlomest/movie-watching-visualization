@@ -28,16 +28,10 @@ def parse_movie(movie_string, year):
 years = [int(year.rstrip('.tx')) for year in listdir('data')]
 years.sort()
 
+# create dictionary of movie data
+# key: year watched
+# value: list of movies watched that year
 movie_data = {}
-# for year in years:
-#     total = 0
-#     with open('data/{0}.txt'.format(year)) as file:
-#         for line in file:
-#             total += 1
-#             movie = Movie.parse_movie(line, year)
-#             print(movie)
-#     movies_watched.append(total)
-
 for year in years:
     movies_watched = []
     with open('data/{0}.txt'.format(year)) as file:
@@ -46,11 +40,8 @@ for year in years:
     
     movie_data[year] = movies_watched
 
-# pyplot.bar(years, movies_watched, width=.6)
-# pyplot.title("Movies Watched")
-# pyplot.show()
-
-for k, v in movie_data.items():
-    print(k)
-    for movie in v:
-        print(movie)
+# Bar graph displaying number of movies watched per year
+totals = [len(movie_data[k]) for k in movie_data.keys()]
+pyplot.bar(movie_data.keys(), totals, width=.6)
+pyplot.title("Movies Watched")
+pyplot.show()
