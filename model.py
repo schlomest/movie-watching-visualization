@@ -9,7 +9,7 @@ class Movie():
             self.rating = int(rating)
 
     def __repr__(self):
-        return 'Movie(name={0}, date_watched={1}, rating={2})'.format(self.name, self.date_watched, self.rating)
+        return 'Movie(name={}, date_watched={}, rating={})'.format(self.name, self.date_watched, self.rating)
 
     def __str__(self):
         return self.name
