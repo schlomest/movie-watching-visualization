@@ -3,7 +3,8 @@ import matplotlib.pyplot as pyplot
 import numpy
 
 from extract import load_movie_data
-from transform import get_ratings_totals, get_weekday_totals, get_yearly_totals
+from transform import (get_monthly_totals, get_ratings_totals,
+                       get_weekday_totals, get_yearly_totals)
 
 
 def autolabel(rects, ax):
@@ -14,7 +15,8 @@ def autolabel(rects, ax):
                     xy=(rect.get_x() + rect.get_width() / 2, height),
                     xytext=(0, -20),
                     textcoords="offset points",
-                    ha='center', va='bottom')
+                    ha='center', va='bottom',
+                    color='white')
 
 
 movie_data = load_movie_data()
@@ -39,28 +41,14 @@ fig.tight_layout()
 pyplot.show()
 
 # MOVIES WATCHED PER MONTH
-movie_list = []
-for k, v in movie_data.items():
-    if k >= 2017:
-        movie_list += v
-
-
-# number of movies per month, year
-monthly_data = {}
-for movie in movie_list:
-    coverted_datetime = numpy.datetime64(movie.date_watched.isoformat()[:-3])
-    if coverted_datetime in monthly_data.keys():
-        monthly_data[coverted_datetime] += 1
-    else:
-        monthly_data[coverted_datetime] = 1
-
+monthly_data = get_monthly_totals(movie_data)
 
 years = mdates.YearLocator()   # every year
 months = mdates.MonthLocator()  # every month
 years_fmt = mdates.DateFormatter('%Y')
 
 fig, ax = pyplot.subplots()
-ax.plot_date(monthly_data.keys(), monthly_data.values())
+ax.plot_date(monthly_data.keys(), monthly_data.values(), linestyle='-')
 
 # format the ticks
 ax.xaxis.set_major_locator(years)
@@ -77,6 +65,7 @@ ax.format_xdata = mdates.DateFormatter('%Y-%m')
 ax.grid(True)
 fig.autofmt_xdate()
 
+ax.set_title('Movies Watched per Month')
 pyplot.show()
 
 
@@ -89,6 +78,7 @@ sizes = list(ratings.values())[1:]
 fig1, ax1 = pyplot.subplots()
 ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=180)
 ax1.axis('equal')
+ax1.set_title('Movie Ratings')
 pyplot.show()
 
 
